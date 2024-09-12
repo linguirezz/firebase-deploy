@@ -1,33 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect,useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
-
+import Credential from './components/credential'
+import { db } from './firebase'
+import { collection,addDoc } from 'firebase/firestore'
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [credential, setCredential] = useState('')
+  async function handleSubmit(e){
+    e.preventDefault()
+    console.log(credential)
+    try {
+      const docRef = await addDoc(collection(db,'user'),credential)
+      console.log(docRef)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  function handleChange(e){
+    setCredential({...credential,[e.target.name]:e.target.value})
+  }
+  // useEffect(()=>{
+    
+  // },[credential])
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className ="flex flex-col border rounded-md w-[300px] h-[400px] mx-auto p-3 " onSubmit={handleSubmit}>
+        <h1 className="font-semibold text-xl capitalize my-1">Register</h1>
+        <form className=' h-full flex flex-col justify-evenly'>
+       <Credential onChange={handleChange} placeHolder="input your name first" label="name"/>
+       <Credential onChange={handleChange} placeHolder="input your email" label="email" type="email"/>
+       <Credential onChange={handleChange} placeHolder="create your password" label="password" type="password"/>
+       <button type="input" className="bg-blue-700 py-2 rounded-md text-white font-semibold" >Input</button>
+        </form>
+
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
