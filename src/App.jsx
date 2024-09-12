@@ -2,7 +2,7 @@ import { useEffect,useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
-import Credential from './components/credential.jsx'
+import Credential from './components/Credential.jsx'
 import { db } from './firebase'
 import { collection,addDoc } from 'firebase/firestore'
 function App() {
